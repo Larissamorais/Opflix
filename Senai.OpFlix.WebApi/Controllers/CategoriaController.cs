@@ -11,32 +11,58 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Senai.OpFlix.WebApi.Controllers
+
 {
-    public class CategoriasController: ControllerBase
+    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [ApiController]
+
+    public class CategoriaController: ControllerBase
     {
         private ICategoriaRepository CategoriaRepository { get; set; }
 
-        public CategoriasController()
+        public CategoriaController()
         {
             CategoriaRepository = new CategoriaRepository();
         }
-    [Authorize(Roles = "Administrador")]
+
+        [HttpGet]
+        public IActionResult Listar()
+        {
+            return Ok(CategoriaRepository.Listar());
+        }
+
+        [Authorize(Roles = "Administrador")]
     [HttpPost]
     public IActionResult Cadastrar(Categoria categoria)
     {
         try
         {
-            int IdCategoria = Convert.ToInt32(HttpContext.User.Claims.First(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
-            categoria.IdCategoria = IdCategoria;
-            CategoriaRepository.Cadastrar(categoria);
-            return Ok();
+                CategoriaRepository.Cadastrar(categoria);
+
+                 return Ok();
         }
         catch (System.Exception ex)
         {
             return BadRequest(new { mensagem = ex.Message });
         }
-    } 
+
     }
+        [HttpGet("{id}")]
+        public IActionResult BuscarPorId(int id)
+        {
+            Categoria Categoria = CategoriaRepository.BuscarPorId(id);
+            if (Categoria == null)
+                return NotFound();
+            return Ok(Categoria);
+        }
+
+    }
+    
 
 }
+
+
+
+
 

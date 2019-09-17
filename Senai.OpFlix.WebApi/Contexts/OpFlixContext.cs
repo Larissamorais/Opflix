@@ -21,6 +21,7 @@ namespace Senai.OpFlix.WebApi.Domains
         public virtual DbSet<Permissão> Permissão { get; set; }
         public virtual DbSet<Plataforma> Plataforma { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
+        public object Lancamentos { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

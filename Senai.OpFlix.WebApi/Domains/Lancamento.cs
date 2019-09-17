@@ -16,5 +16,6 @@ namespace Senai.OpFlix.WebApi.Domains
 
         public Categoria IdCategoriaNavigation { get; set; }
         public Permissao IdPermissaoNavigation { get; set; }
+        public object Nome { get; internal set; }
     }
 }

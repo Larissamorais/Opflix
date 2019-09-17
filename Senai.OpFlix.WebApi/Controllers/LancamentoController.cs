@@ -13,6 +13,12 @@ using System.Threading.Tasks;
 namespace Senai.OpFlix.WebApi.Controllers
 
 {
+
+
+    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [ApiController]
+
     public class LancamentoController:ControllerBase
     {
         private ILancamentoRepository LancamentoRepository { get; set; }
@@ -43,11 +49,46 @@ namespace Senai.OpFlix.WebApi.Controllers
         {
             return Ok(LancamentoRepository.Listar());
         }
-
-        
+        [HttpGet("{id}")]
+        public IActionResult BuscarPorId(int id)
+        {
+            try
+            {
+                Lancamento lancamento = LancamentoRepository.BuscarPorId(id);
+                if (lancamento == null)
+                    return NotFound();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensagem = ex.Message });
+            }
 
         }
+        [HttpPut]
+        public IActionResult Atualizar(Lancamento lancamento)
+        {
+            try
+            {
+                
+                Lancamento LancamentoBuscada = LancamentoRepository.BuscarPorId(lancamento.IdLancamento);
+                
+                if (LancamentoBuscada == null)
+                    return NotFound();
+                
+               LancamentoRepository.Atualizar(lancamento);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensagem = "Ah, não." });
+            }
+        }
+        [HttpDelete("{id}")]
+        public IActionResult Deletar(int id)
+        {
+            LancamentoRepository.Deletar(id);
+            return Ok();
+        }
     } 
-
-
 }

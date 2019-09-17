@@ -9,5 +9,10 @@ namespace Senai.OpFlix.WebApi.Interface
     public interface ICategoriaRepository
     {
         void Cadastrar(Categoria categoria);
+
+        List<Categoria> Listar();
+
+      
+        Categoria BuscarPorId(int id);
     }
 }
